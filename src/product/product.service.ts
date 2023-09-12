@@ -32,7 +32,7 @@ export class ProductService {
     return this.productModel
       .aggregate<
         ProductModel & {
-          review: ReviewModel[];
+          reviews: ReviewModel[];
           reviewCount: number;
           reviewAvg: number;
         }
@@ -55,13 +55,13 @@ export class ProductService {
             from: 'Review',
             localField: '_id',
             foreignField: 'productId',
-            as: 'review',
+            as: 'reviews',
           },
         },
         {
           $addFields: {
-            reviewCount: { $size: '$review' },
-            reviewAvg: { $avg: '$review.rating' },
+            reviewCount: { $size: '$reviews' },
+            reviewAvg: { $avg: '$reviews.rating' },
           },
         },
       ])
