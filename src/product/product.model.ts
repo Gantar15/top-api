@@ -19,7 +19,7 @@ export class ProductModel {
   price: number;
 
   @Prop()
-  oldPrice: number;
+  oldPrice?: number;
 
   @Prop()
   credit: number;
