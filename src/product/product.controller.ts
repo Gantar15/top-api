@@ -8,6 +8,8 @@ import {
   Param,
   Patch,
   Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ProductModel } from './product.model';
 import { FindProductDto } from './dto/find-product.dto';
@@ -20,6 +22,7 @@ import { IdValidationPipe } from 'src/pipes/id-validation-pipe';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @UsePipes(new ValidationPipe())
   @Post('create')
   async create(@Body() dto: CreateProductDto) {
     return this.productService.create(dto);
@@ -42,6 +45,7 @@ export class ProductController {
     }
   }
 
+  @UsePipes(new ValidationPipe())
   @Patch(':id')
   async patch(
     @Param('id', IdValidationPipe) id: string,
@@ -54,6 +58,7 @@ export class ProductController {
     return updatedProduct;
   }
 
+  @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post()
   async find(@Body() dto: FindProductDto) {
