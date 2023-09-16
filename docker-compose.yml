@@ -1,7 +1,7 @@
 version: '3'
 services:
   top_api:
-    image: top-api:latest
+    image: ghcr.io/gantar15/top-api:latest
     container_name: top-api
     restart: always
     ports:
