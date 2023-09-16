@@ -14,5 +14,5 @@ jobs:
       - name: Build and push to registry
         run: |
           docker login --username Gantar15 --password ${{ secrets.DOCKER_PASSWORD }} ghcr.io
-          docker build -t ghcr.io/Gantar15/top-api:latest
+          docker build . -t ghcr.io/Gantar15/top-api:latest
           docker push ghcr.io/Gantar15/top-api:latest
