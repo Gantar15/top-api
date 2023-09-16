@@ -3,3 +3,4 @@ mongo-data-4.4
 dist
 .vscode
 .clinic
+/uploads

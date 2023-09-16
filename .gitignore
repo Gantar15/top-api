@@ -4,6 +4,7 @@
 /mongo-data-4.4
 .env
 .clinic
+/uploads
 
 # Logs
 logs
