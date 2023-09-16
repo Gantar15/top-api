@@ -8,4 +8,5 @@ COPY . .
 RUN npm run build
 RUN npm prune --production
 
+LABEL org.opencontainers.image.source=https://github.com/Gantar15/top-api
 ENTRYPOINT [ "node", "./dist/main.js" ]
