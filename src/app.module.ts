@@ -1,15 +1,15 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { FilesModule } from './files/files.module';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProductModule } from './product/product.module';
 import { ReviewModule } from './review/review.module';
+import { TelegramModule } from './telegram/telegram.module';
 import { TopPageModule } from './top-page/top-page.module';
 import { getMongoConfig } from './configs/mongo.config';
-import { FilesModule } from './files/files.module';
+import { getTelegramConfig } from './configs/telegram.config';
 
 @Module({
   imports: [
@@ -24,13 +24,11 @@ import { FilesModule } from './files/files.module';
     ProductModule,
     ReviewModule,
     FilesModule,
-  ],
-  controllers: [AppController],
-  providers: [
-    {
-      provide: AppService,
-      useClass: AppService,
-    },
+    TelegramModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getTelegramConfig,
+    }),
   ],
 })
 export class AppModule {}
