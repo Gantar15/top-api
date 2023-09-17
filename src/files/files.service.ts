@@ -1,15 +1,14 @@
-import { stat, writeFile } from 'fs/promises';
-
 import { FileElementResponse } from './dto/file-element.response';
 import { Injectable } from '@nestjs/common';
+import { OperationFile } from './dto/operation-file.class';
 import { ensureDir } from './lib/ensureDir';
 import { path } from 'app-root-path';
+import sharp from 'sharp';
+import { writeFile } from 'fs/promises';
 
 @Injectable()
 export class FilesService {
-  async saveFiles(
-    files: Express.Multer.File[],
-  ): Promise<FileElementResponse[]> {
+  async saveFiles(files: OperationFile[]): Promise<FileElementResponse[]> {
     const dateFolderName = new Date()
       .toLocaleString('ru')
       .split(', ')[0]
@@ -27,5 +26,9 @@ export class FilesService {
     }
 
     return response;
+  }
+
+  async convertToWebP(file: Buffer): Promise<Buffer> {
+    return sharp(file).webp().toBuffer();
   }
 }

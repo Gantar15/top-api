@@ -11,6 +11,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { FileElementResponse } from './dto/file-element.response';
 import { FilesService } from './files.service';
+import { OperationFile } from './dto/operation-file.class';
 
 @Controller('files')
 export class FilesController {
@@ -19,10 +20,16 @@ export class FilesController {
   @Post('upload')
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor('files'))
+  @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<FileElementResponse[]> {
-    return this.filesService.saveFiles([file]);
+    let convertedFiles: OperationFile[] = [file];
+    if (file.mimetype.includes('image')) {
+      const webpFileBuffer = await this.filesService.convertToWebP(file.buffer);
+      const newFileName = file.originalname.split('.')[0] + '.webp';
+      convertedFiles.push(new OperationFile(newFileName, webpFileBuffer));
+    }
+    return this.filesService.saveFiles(convertedFiles);
   }
 }
