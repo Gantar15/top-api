@@ -65,4 +65,8 @@ export class TopPageModel {
   tags: string[];
 }
 
-export const TopPageSchema = SchemaFactory.createForClass(TopPageModel);
+const TopPageSchema = SchemaFactory.createForClass(TopPageModel);
+
+TopPageSchema.index({ alias: 'text', title: 'text', seoText: 'text' });
+
+export { TopPageSchema };

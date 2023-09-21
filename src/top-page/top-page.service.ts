@@ -33,14 +33,28 @@ export class TopPageService {
 
   async findByCategory(firstCategory: TopLevelCategory) {
     return this.topPageModel
-      .find(
-        { firstCategory },
-        { alias: true, secondCategory: true, title: true },
-      )
+      .aggregate()
+      .match({
+        firstCategory,
+      })
+      .group({
+        _id: { secondCategory: '$secondCategory' },
+      })
       .exec();
   }
 
   async findByAlias(alias: string) {
     return this.topPageModel.findOne({ alias }).exec();
+  }
+
+  async findByText(text: string) {
+    return this.topPageModel
+      .find({
+        $text: {
+          $search: text,
+          $caseSensitive: false,
+        },
+      })
+      .exec();
   }
 }
